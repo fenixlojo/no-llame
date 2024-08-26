@@ -1,5 +1,5 @@
 const express = require("express");
-const { queries } = require("./sql");
+const queries = require("../controllers/controller");
 const router = express.Router();
 
 router.get("/search/:number", (req, res) => {
