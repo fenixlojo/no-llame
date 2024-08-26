@@ -17,6 +17,21 @@ router.get("/search/:number", (req, res) => {
   }
 });
 
+router.get("/search-native/:number", (req, res) => {
+  try {
+    const number = req.params["number"];
+    queries
+      .nativeFindAll(number)
+      .then((v) => {
+        return res.json(v);
+      })
+      .catch((err) => res.json({ err }));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error al verificar el número" });
+  }
+});
+
 router.get("/exist/:number", (req, res) => {
   try {
     const number = req.params["number"];

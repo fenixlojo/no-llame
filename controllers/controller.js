@@ -1,4 +1,4 @@
-const { NoLlame, Op } = require("../models/index");
+const { NoLlame,sequelize,Sequelize, Op } = require("../models/index");
 
 const queries = {
   findAll: () => NoLlame.findAll(),
@@ -10,6 +10,13 @@ const queries = {
         },
       },
     }),
+  nativeFindAll: (string) => {
+    const sql = "SELECT * FROM no_llame WHERE numero_s = :numero";
+    return sequelize.query(sql, {
+      replacements: { numero: string },
+      type: Sequelize.QueryTypes.SELECT,
+    });
+  },
   existByNumber: (number) =>
     NoLlame.findOne({
       where: {

@@ -36,4 +36,4 @@ const NoLlame = sequelize.define(
 
 sequelize.sync(); // Este método crea las tablas si no existen
 
-module.exports = { sequelize, NoLlame, Op };
+module.exports = { sequelize, NoLlame, Op, Sequelize };
