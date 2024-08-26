@@ -21,7 +21,7 @@ router.get("/search-native/:number", (req, res) => {
   try {
     const number = req.params["number"];
     queries
-      .nativeFindAll(number)
+      .nativeFindByNumber(number)
       .then((v) => {
         return res.json(v);
       })

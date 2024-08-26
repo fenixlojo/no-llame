@@ -10,7 +10,7 @@ const queries = {
         },
       },
     }),
-  nativeFindAll: (string) => {
+  nativeFindByNumber: (string) => {
     const sql = "SELECT * FROM no_llame WHERE numero_s = :numero";
     return sequelize.query(sql, {
       replacements: { numero: string },
