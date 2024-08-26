@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes,Op } = require("sequelize");
+const { Sequelize, DataTypes, Op } = require("sequelize");
 
 const sequelize = new Sequelize(
   process.env.DB_TABLE,
@@ -26,6 +26,30 @@ const NoLlame = sequelize.define(
   }
 );
 
+const queries = {
+  findAll: () => NoLlame.findAll(),
+  findByNumber: (number) =>
+    NoLlame.findAll({
+      where: {
+        numero_s: {
+          [Op.like]: `%${number}%`,
+        },
+      },
+    }),
+  existByNumber: (number) =>
+    NoLlame.findOne({
+      where: {
+        numero_s: {
+          [Op.like]: `%${number}%`,
+        },
+      },
+    }),
+  add: (number) =>
+    NoLlame.create({
+      numero_s: number,
+    }),
+};
+
 sequelize.sync(); // Este método crea las tablas si no existen
 
-module.exports = { sequelize, NoLlame,Op };
+module.exports = { sequelize, NoLlame, Op, queries };

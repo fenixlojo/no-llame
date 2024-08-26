@@ -1,18 +1,13 @@
 const express = require("express");
 require("dotenv").config();
-const { NoLlame, Op } = require("./sql");
+const { queries } = require("./sql");
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.get("/search/:number", (req, res) => {
   const number = req.params["number"];
-  NoLlame.findAll({
-    where: {
-      numero_s: {
-        [Op.like]: `%${number}%`, // Para números que terminan con '092095737'
-      },
-    },
-  })
+  queries
+    .findByNumber(number)
     .then((v) => {
       return res.json(v.map((e) => e.dataValues));
     })
@@ -21,13 +16,8 @@ app.get("/search/:number", (req, res) => {
 
 app.get("/exist/:number", (req, res) => {
   const number = req.params["number"];
-  NoLlame.findOne({
-    where: {
-      numero_s: {
-        [Op.like]: `%${number}%`, // Para números que terminan con '092095737'
-      },
-    },
-  })
+  queries
+    .existByNumber(number)
     .then((v) => {
       const exists = !!v;
       return res.json({ exists });
@@ -37,13 +27,12 @@ app.get("/exist/:number", (req, res) => {
 
 app.get("/add/:number", (req, res) => {
   const number = req.params["number"];
-  NoLlame.create({
-    numero_s: number,
-  });
+  queries.add(number);
 });
 
 app.get("/", (req, res) => {
-  NoLlame.findAll()
+  queries
+    .findAll()
     .then((v) => {
       return res.json(v.map((e) => e.dataValues));
     })
