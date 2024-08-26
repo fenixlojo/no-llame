@@ -17,7 +17,7 @@ router.get("/search/:number", (req, res) => {
   }
 });
 
-router.get("/search-native/:number", (req, res) => {
+router.get("/find/:number", (req, res) => {
   try {
     const number = req.params["number"];
     queries
