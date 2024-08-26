@@ -22,15 +22,13 @@ const NoLlame = sequelize.define(
     },
   },
   {
+    tableName: "no_llame", // Nombre de la tabla
     indexes: [
       {
         unique: false,
         fields: ["numero_s"],
       },
     ],
-  },
-  {
-    tableName: "no_llame", // Nombre de la tabla
   }
 );
 
