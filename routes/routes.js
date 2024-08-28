@@ -1,6 +1,11 @@
 const express = require("express");
-const queries = require("../controllers/controller");
+const { queries, logic } = require("../controllers/controller");
 const router = express.Router();
+
+router.post("/parse-excel", (req, res) => {
+  // El archivo está en req.body
+  return logic.parseExcel(req, res);
+});
 
 router.get("/search/:number", (req, res) => {
   try {
