@@ -1,11 +1,14 @@
 const express = require("express");
+const multer = require("multer");
 const { queries, logic } = require("../controllers/controller");
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/parse-excel", (req, res) => {
+router.post("/upload-excel",  upload.single('file'), (req, res) => {
   // El archivo está en req.body
   return logic.parseExcel(req, res);
 });
+
 
 router.get("/search/:number", (req, res) => {
   try {

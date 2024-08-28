@@ -8,6 +8,12 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: process.env.DB_DIALET,
+    pool: {
+      max: 20, 
+      min: 0,
+      acquire: 300000, // 5 minutos
+      idle: 10000
+    }
   }
 );
 sequelize.authenticate();
