@@ -10,6 +10,17 @@ router.post("/upload-excel",  upload.single('file'), (req, res) => {
 });
 
 
+router.post("/upload-csv",  upload.single('file'), (req, res) => {
+  // El archivo está en req.body
+  return logic.parseExcel(req, res);
+});
+
+router.post("/search-excel",  upload.single('file'), (req, res) => {
+  // El archivo está en req.body
+  return logic.searchExcel(req, res);
+});
+
+
 router.get("/search/:number", (req, res) => {
   try {
     const number = req.params["number"];
