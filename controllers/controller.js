@@ -118,7 +118,7 @@ const logic = {
       res.status(500).send("Error procesando el archivo");
     }
   },
-  searchExcel: (req, res) => {
+  searchExcel: async (req, res) => {
     if (!req.file) {
       return res.status(400).send("No se ha enviado ningún archivo.");
     }
@@ -135,12 +135,10 @@ const logic = {
       const noLlamar = [];
 
       if (firstColumnData.length > 0) {
-        searchNumberBatch(firstColumnData, noLlamar);
+        res.json(await searchNumberBatch(firstColumnData, noLlamar));
       } else {
         res.status(400).send("Archivo sin número a procesar");
       }
-
-      res.json({ firstColumnData });
     } catch (error) {
       console.error("Error procesando el archivo Excel:", error);
       res.status(500).send("Error procesando el archivo");
@@ -189,9 +187,11 @@ const searchNumberBatch = async (numbers, list) => {
       );
     }
     await transaction.commit();
+    return list;
   } catch (error) {
     await transaction.rollback();
     throw error;
+    return list;
   }
 };
 
