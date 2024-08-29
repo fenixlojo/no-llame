@@ -118,7 +118,7 @@ const logic = {
       res.status(500).send("Error procesando el archivo");
     }
   },
-  searchExcel: async (req, res) => {
+  searchExcel: async (req, res, useIn) => {
     if (!req.file) {
       return res.status(400).send("No se ha enviado ningún archivo.");
     }
@@ -135,7 +135,7 @@ const logic = {
       const noLlamar = [];
 
       if (firstColumnData.length > 0) {
-        res.json(await searchNumberBatch(firstColumnData, noLlamar));
+        res.json(await searchNumberBatch(firstColumnData, noLlamar, useIn));
       } else {
         res.status(400).send("Archivo sin número a procesar");
       }
@@ -169,7 +169,7 @@ const parseNumberBatch = async (numbers) => {
   }
 };
 
-const searchNumberBatch = async (numbers, list) => {
+const searchNumberBatch = async (numbers, list, useIn) => {
   const transaction = await sequelize.transaction();
   try {
     for (let i = 0; i < numbers.length; i += BATCH_SIZE) {
@@ -179,7 +179,9 @@ const searchNumberBatch = async (numbers, list) => {
           const numStr = num.toString();
           if (isValidNumber(numStr)) {
             const isInList = await queries.existByNumber(numStr);
-            if (isInList) {
+            if (isInList && useIn) {
+              list.push(numStr);
+            } else if (!isInList && !useIn) {
               list.push(numStr);
             }
           }
@@ -191,7 +193,6 @@ const searchNumberBatch = async (numbers, list) => {
   } catch (error) {
     await transaction.rollback();
     throw error;
-    return list;
   }
 };
 

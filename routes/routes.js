@@ -4,22 +4,24 @@ const { queries, logic } = require("../controllers/controller");
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/upload-excel",  upload.single('file'), (req, res) => {
+router.post("/upload-excel", upload.single("file"), (req, res) => {
   // El archivo está en req.body
   return logic.parseExcel(req, res);
 });
 
-
-router.post("/upload-csv",  upload.single('file'), (req, res) => {
+router.post("/upload-csv", upload.single("file"), (req, res) => {
   // El archivo está en req.body
   return logic.parseExcel(req, res);
 });
 
-router.post("/search-excel",  upload.single('file'), (req, res) => {
+router.post("/search-excel/in", upload.single("file"), (req, res) => {
   // El archivo está en req.body
-  return logic.searchExcel(req, res);
+  return logic.searchExcel(req, res, true);
 });
-
+router.post("/search-excel/not-in", upload.single("file"), (req, res) => {
+  // El archivo está en req.body
+  return logic.searchExcel(req, res, false);
+});
 
 router.get("/search/:number", (req, res) => {
   try {
